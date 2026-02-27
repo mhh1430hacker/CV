@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Mahdi Al-Hajji | Ainex AI</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #00ffcc;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #canvas {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: -1;
+        }
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #00ffcc;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 0 20px #00ffcc33;
+        }
+        .links a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #444;
+            transition: 0.3s;
+        }
+        .links a:hover {
+            background: #00ffcc;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="profile-card">
+        <h1>MAHDI AL-HAJJI</h1>
+        <p>Founder of Ainex AI | Author</p>
+        <div class="links">
+            <a href="https://www.amazon.com/dp/B0GPT71JYV">English Book (Amazon)</a>
+            <a href="https://www.lulu.com/shop/...">Arabic Book (Lulu)</a>
+        </div>
+    </div>
+
+    <script>
+        // كود بسيط لتحريك خلفية جزيئات (Particles)
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        for(let i=0; i<100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                v: Math.random() * 2
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ffcc';
+            particles.forEach(p => {
+                p.y -= p.v;
+                if(p.y < 0) p.y = canvas.height;
+                ctx.fillRect(p.x, p.y, 2, 2);
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
