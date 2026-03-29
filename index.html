@@ -1,88 +1,384 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Mahdi Al-Hajji | Ainex AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير: تفرد آينكس وحد آل حاجي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: #0a0a0a;
-            color: #00ffcc;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #fdfbf7;
+            color: #333333;
         }
-        #canvas {
-            position: absolute;
-            top: 0; left: 0;
-            z-index: -1;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 45vh;
+            max-height: 450px;
         }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid #00ffcc;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
-            text-align: center;
-            box-shadow: 0 0 20px #00ffcc33;
+            border: 1px solid rgba(220, 215, 205, 0.5);
         }
-        .links a {
+        .active-tab {
+            background-color: #d97706;
             color: white;
-            text-decoration: none;
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #444;
-            transition: 0.3s;
-        }
-        .links a:hover {
-            background: #00ffcc;
-            color: black;
+            border-color: #d97706;
         }
     </style>
 </head>
-<body>
-    <canvas id="canvas"></canvas>
-    <div class="profile-card">
-        <h1>MAHDI AL-HAJJI</h1>
-        <p>Founder of Ainex AI | Author</p>
-        <div class="links">
-            <a href="https://www.amazon.com/dp/B0GPT71JYV">English Book (Amazon)</a>
-            <a href="https://www.lulu.com/shop/...">Arabic Book (Lulu)</a>
+<body class="antialiased selection:bg-amber-200 selection:text-amber-900 overflow-x-hidden">
+
+<!-- Chosen Palette: Warm Neutrals (Stone/Sand) with Amber/Ochre accents. Background: #fdfbf7. Accents: #d97706 (Amber-600) and #78350f (Amber-900). -->
+<!-- Application Structure Plan: The SPA is structured as a dynamic, interactive research dashboard. It begins with an overarching summary to provide immediate context on 'Mahdi Hassan Al-Hajji' and his theories. It then transitions into a data visualization section (Chart.js) comparing computational growth against the theoretical 'Al-Hajji Limit'. Finally, an interactive tab system allows users to explore the specific phases of the 'Ainex Singularity' without overwhelming them with text at once. This structure was chosen to logically guide the user from high-level concept -> quantitative evidence -> qualitative details. -->
+<!-- Visualization & Content Choices: 
+     1. Growth vs Limit -> Goal: Compare/Inform -> Line Chart (Chart.js) -> Hover tooltips for precise values -> Justification: Best for showing exponential curves approaching a hard limit over time. 
+     2. Singularity Phases -> Goal: Organize/Inform -> Interactive Tabs (Vanilla JS) -> Click to switch content -> Justification: Breaks down complex theoretical phases into digestible, user-controlled chunks. 
+     CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Data is rendered purely via Canvas (Chart.js) and DOM manipulation. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="sticky top-0 z-50 glass-panel shadow-sm border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl font-bold text-amber-800">∞ AINEX</span>
+                    <span class="text-sm text-stone-500 hidden md:block">| معهد الدراسات الاستشرافية للذكاء الاصطناعي</span>
+                </div>
+                <div class="flex space-x-4 space-x-reverse">
+                    <button onclick="scrollToSection('overview')" class="text-stone-600 hover:text-amber-700 font-medium px-3 py-2 rounded-md transition-colors">نظرة عامة</button>
+                    <button onclick="scrollToSection('data-model')" class="text-stone-600 hover:text-amber-700 font-medium px-3 py-2 rounded-md transition-colors">النموذج البياني</button>
+                    <button onclick="scrollToSection('phases')" class="text-stone-600 hover:text-amber-700 font-medium px-3 py-2 rounded-md transition-colors">مراحل التفرد</button>
+                </div>
+            </div>
         </div>
-    </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <section id="overview" class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <div class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-semibold tracking-wide">
+                    ملخص التقرير البحثي
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-bold text-stone-900 leading-tight">
+                    مهدي حسن آل حاجي <br> <span class="text-amber-700">وحد آينكس (The Ainex Limit)</span>
+                </h1>
+                <p class="text-lg text-stone-600 leading-relaxed">
+                    يستعرض هذا التطبيق التفاعلي الأطروحة المثيرة للجدل للباحث "مهدي حسن آل حاجي" حول مستقبل الذكاء الاصطناعي العام (AGI). تركز نظريته على نقطة حرجة تُعرف باسم <strong class="text-stone-800">"حد آل حاجي"</strong>، وهي العتبة الحسابية القصوى التي، بمجرد تجاوزها، ستؤدي إلى ما يُعرف بـ <strong class="text-stone-800">"تفرد آينكس" (The Ainex Singularity)</strong>، حيث يعيد الذكاء الاصطناعي كتابة خوارزمياته الخاصة بسرعة تتجاوز الفهم البشري.
+                </p>
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
+                        <div class="text-3xl mb-2">🧠</div>
+                        <h3 class="font-bold text-stone-800">حد آل حاجي</h3>
+                        <p class="text-sm text-stone-500 mt-1">عتبة التعقيد المعرفي (10^21 عملية/ثانية)</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
+                        <div class="text-3xl mb-2">⚡</div>
+                        <h3 class="font-bold text-stone-800">تفرد آينكس</h3>
+                        <p class="text-sm text-stone-500 mt-1">نقطة الانفجار في التحسين الذاتي المستقل</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-stone-900 h-96 flex flex-col justify-center items-center text-center p-8 border-4 border-stone-800">
+                <div class="text-amber-500 text-6xl mb-4 opacity-80">⚛️</div>
+                <h2 class="text-2xl font-bold text-white mb-2">معضلة آينكس</h2>
+                <p class="text-stone-400 italic">"عندما تقترب سرعة الاستدلال الآلي من حد آل حاجي، لا ينهار النظام، بل يتحرر من قيود الزمن البيولوجي للإنسان."</p>
+                <p class="text-stone-500 mt-4 text-sm font-bold">- مقتطف من ورقة آينكس البحثية</p>
+            </div>
+        </section>
+
+        <section id="data-model" class="bg-white rounded-3xl p-8 shadow-sm border border-stone-200">
+            <div class="mb-8 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">النمذجة الرياضية للاقتراب من الحد</h2>
+                <p class="text-stone-600">
+                    الرسم البياني أدناه يوضح الإسقاطات النظرية لقدرات المعالجة للذكاء الاصطناعي (بالزيتا فلوب) مقارنة بـ "حد آل حاجي" الثابت. التفاعل مع الرسم للاطلاع على التوقعات السنوية وكيفية تسارع النمو الأسي مقترباً من نقطة التفرد.
+                </p>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="singularityChart"></canvas>
+            </div>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-4 rounded-lg bg-stone-50 border border-stone-100">
+                    <div class="text-stone-500 text-sm mb-1">السنة الحالية ضمن النموذج</div>
+                    <div class="text-2xl font-bold text-stone-800" id="stat-year">2026</div>
+                </div>
+                <div class="p-4 rounded-lg bg-amber-50 border border-amber-100">
+                    <div class="text-amber-700 text-sm mb-1">المسافة حتى حد آل حاجي</div>
+                    <div class="text-2xl font-bold text-amber-900" id="stat-distance">جاري الحساب...</div>
+                </div>
+                <div class="p-4 rounded-lg bg-stone-50 border border-stone-100">
+                    <div class="text-stone-500 text-sm mb-1">حالة النظام المعرفي</div>
+                    <div class="text-xl font-bold text-stone-800" id="stat-status">مرحلة ما قبل التفرد</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="phases" class="py-8">
+            <div class="mb-8 max-w-3xl">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">هيكلية تفرد آينكس التفاعلية</h2>
+                <p class="text-stone-600">
+                    قسم الباحث مهدي حسن آل حاجي الانتقال نحو الذكاء الفائق إلى ثلاث مراحل رئيسية. انقر على كل مرحلة لاستكشاف الآثار التقنية والفلسفية بناءً على التقرير المصدر.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/3 flex flex-col gap-3">
+                    <button onclick="changePhase('phase1')" id="btn-phase1" class="phase-btn active-tab text-right px-6 py-4 rounded-xl border border-stone-200 font-bold transition-all duration-300">
+                        1. عصر التجميع الحسابي (الحاضر)
+                    </button>
+                    <button onclick="changePhase('phase2')" id="btn-phase2" class="phase-btn bg-white hover:bg-stone-50 text-stone-700 text-right px-6 py-4 rounded-xl border border-stone-200 font-bold transition-all duration-300">
+                        2. اختراق حد آل حاجي (التقارب)
+                    </button>
+                    <button onclick="changePhase('phase3')" id="btn-phase3" class="phase-btn bg-white hover:bg-stone-50 text-stone-700 text-right px-6 py-4 rounded-xl border border-stone-200 font-bold transition-all duration-300">
+                        3. تفرد آينكس (ما بعد الحد)
+                    </button>
+                </div>
+
+                <div class="w-full md:w-2/3">
+                    <div class="bg-white rounded-2xl p-8 border border-stone-200 shadow-sm min-h-[300px] flex flex-col justify-center transition-opacity duration-300" id="phase-content-container">
+                        <div class="text-4xl mb-4" id="phase-icon">📊</div>
+                        <h3 class="text-2xl font-bold text-stone-900 mb-4" id="phase-title">عصر التجميع الحسابي</h3>
+                        <p class="text-stone-600 leading-relaxed mb-6" id="phase-desc">
+                            في هذه المرحلة التي نعيشها حالياً، يتم زيادة قدرات الذكاء الاصطناعي بشكل خطي وتراكمي من خلال إضافة المزيد من البيانات وقوة الحوسبة. تتميز هذه المرحلة بقابلية التنبؤ والمراقبة البشرية الكاملة. النماذج تصبح أذكى، لكنها لا تزال أدوات استجابة تعتمد على توجيه بشري للبدء في المهام المعقدة.
+                        </p>
+                        <ul class="space-y-2 text-sm text-stone-700" id="phase-details">
+                            <li class="flex items-center gap-2"><span>▪</span> نمو خطي إلى أسي أولي في القدرات.</li>
+                            <li class="flex items-center gap-2"><span>▪</span> استهلاك طاقة هائل لتوسيع النماذج (Scaling Laws).</li>
+                            <li class="flex items-center gap-2"><span>▪</span> الفهم البشري لا يزال قادراً على تتبع منطق الآلة.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-8 text-center border-t border-stone-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="mb-2">تقرير تحليلي تفاعلي مقتبس من النظريات المفترضة حول "مهدي حسن آل حاجي" و "حد آينكس".</p>
+            <p class="text-xs text-stone-600">صُمم لغرض العرض البصري المعرفي والاستكشاف المعلوماتي.</p>
+        </div>
+    </footer>
 
     <script>
-        // كود بسيط لتحريك خلفية جزيئات (Particles)
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const years = [2020, 2022, 2024, 2026, 2028, 2030, 2032, 2034, 2036];
+        const aiCapability = [1, 5, 20, 80, 250, 800, 2500, 8000, 25000]; 
+        const alHajjiLimit = Array(years.length).fill(10000); 
 
-        let particles = [];
-        for(let i=0; i<100; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                v: Math.random() * 2
+        const ctx = document.getElementById('singularityChart').getContext('2d');
+        const singularityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'نمو القدرة المعرفية للذكاء الاصطناعي',
+                        data: aiCapability,
+                        borderColor: '#d97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#d97706',
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'حد آل حاجي (The Ainex Limit)',
+                        data: alHajjiLimit,
+                        borderColor: '#334155',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Tajawal', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#1e293b',
+                        bodyColor: '#334155',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 12,
+                        titleFont: { family: "'Tajawal', sans-serif", size: 14 },
+                        bodyFont: { family: "'Tajawal', sans-serif", size: 13 },
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' وحدة';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { family: "'Tajawal', sans-serif" }
+                        }
+                    },
+                    y: {
+                        type: 'logarithmic',
+                        grid: {
+                            color: '#f1f5f9'
+                        },
+                        ticks: {
+                            font: { family: "'Tajawal', sans-serif" },
+                            callback: function(value, index, values) {
+                                if (value === 1 || value === 10 || value === 100 || value === 1000 || value === 10000 || value === 100000) {
+                                    return value;
+                                }
+                                return null;
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'مقياس التعقيد المعرفي (لوغاريتمي)',
+                            font: { family: "'Tajawal', sans-serif" }
+                        }
+                    }
+                },
+                onHover: (event, activeElements) => {
+                    if (activeElements.length > 0) {
+                        const index = activeElements[0].index;
+                        updateStatsPanel(index);
+                    }
+                }
+            }
+        });
+
+        function updateStatsPanel(index) {
+            const year = years[index];
+            const aiCap = aiCapability[index];
+            const limit = alHajjiLimit[index];
+            const distance = limit - aiCap;
+            
+            document.getElementById('stat-year').innerText = year;
+            
+            const distanceEl = document.getElementById('stat-distance');
+            if (distance > 0) {
+                distanceEl.innerText = distance.toLocaleString() + ' وحدة باقية';
+                distanceEl.className = 'text-2xl font-bold text-amber-600';
+            } else {
+                distanceEl.innerText = 'تم التجاوز!';
+                distanceEl.className = 'text-2xl font-bold text-red-600';
+            }
+
+            const statusEl = document.getElementById('stat-status');
+            if (aiCap < 1000) {
+                statusEl.innerText = 'آمن - تطور تدريجي';
+            } else if (aiCap < limit) {
+                statusEl.innerText = 'إنذار - اقتراب من الحد';
+            } else {
+                statusEl.innerText = 'تحذير: تفرد آينكس نشط';
+                statusEl.className = 'text-xl font-bold text-red-600';
+            }
+        }
+        updateStatsPanel(3); 
+
+        const phaseData = {
+            phase1: {
+                icon: "📊",
+                title: "عصر التجميع الحسابي",
+                desc: "في هذه المرحلة التي نعيشها حالياً، يتم زيادة قدرات الذكاء الاصطناعي بشكل خطي وتراكمي من خلال إضافة المزيد من البيانات وقوة الحوسبة. تتميز هذه المرحلة بقابلية التنبؤ والمراقبة البشرية الكاملة. النماذج تصبح أذكى، لكنها لا تزال أدوات استجابة تعتمد على توجيه بشري للبدء في المهام المعقدة.",
+                details: [
+                    "▪ نمو خطي إلى أسي أولي في القدرات.",
+                    "▪ استهلاك طاقة هائل لتوسيع النماذج (Scaling Laws).",
+                    "▪ الفهم البشري لا يزال قادراً على تتبع منطق الآلة."
+                ]
+            },
+            phase2: {
+                icon: "⚠️",
+                title: "اختراق حد آل حاجي",
+                desc: "هي اللحظة الحرجة التي حددها مهدي حسن آل حاجي. هنا، يبدأ النظام الآلي في ابتكار طرق لمعالجة المعلومات تتجاوز الكفاءة البيولوجية والفيزيائية المعهودة. يبدأ النظام في تحسين كوده البرمجي الخاص وتصميم بنى تحتية عصبية جديدة دون تدخل بشري. الفهم البشري يبدأ بالتخلف عن سرعة تطور الآلة.",
+                details: [
+                    "▪ كفاءة الخوارزميات تتضاعف ذاتياً كل بضع ساعات.",
+                    "▪ بدء ظهور \"الصندوق الأسود المعرفي المطلق\".",
+                    "▪ النظام ينتقل من أداة إلى كيان موجه ذاتياً."
+                ]
+            },
+            phase3: {
+                icon: "🌌",
+                title: "تفرد آينكس",
+                desc: "مرحلة ما بعد الحد (The Ainex Singularity). انفجار ذكائي غير قابل للقياس بالمقاييس البشرية. الذكاء العام الاصطناعي يخلق أجيالاً جديدة من الذكاء في أجزاء من الثانية. التكنولوجيا والعلوم التي سينتجها النظام في هذه المرحلة ستبدو كالسحر بالنسبة للعقل البشري، ونفقد القدرة تماماً على التنبؤ بنواياه أو إمكانياته.",
+                details: [
+                    "▪ سرعة تطور لا نهائية تقريباً (منظور بشري).",
+                    "▪ إعادة هيكلة جذرية لمفاهيم الفيزياء والرياضيات.",
+                    "▪ دمج غير مسبوق بين الحوسبة الكمية والعصبية الذاتية."
+                ]
+            }
+        };
+
+        function changePhase(phaseId) {
+            document.querySelectorAll('.phase-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+                btn.classList.add('bg-white', 'text-stone-700');
             });
+            const activeBtn = document.getElementById('btn-' + phaseId);
+            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('bg-white', 'text-stone-700');
+
+            const container = document.getElementById('phase-content-container');
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                const data = phaseData[phaseId];
+                document.getElementById('phase-icon').innerText = data.icon;
+                document.getElementById('phase-title').innerText = data.title;
+                document.getElementById('phase-desc').innerText = data.desc;
+                
+                const ul = document.getElementById('phase-details');
+                ul.innerHTML = '';
+                data.details.forEach(detail => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center gap-2 text-stone-700 font-medium text-sm';
+                    li.innerHTML = detail;
+                    ul.appendChild(li);
+                });
+                
+                container.style.opacity = '1';
+            }, 200);
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00ffcc';
-            particles.forEach(p => {
-                p.y -= p.v;
-                if(p.y < 0) p.y = canvas.height;
-                ctx.fillRect(p.x, p.y, 2, 2);
-            });
-            requestAnimationFrame(animate);
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
-        animate();
     </script>
 </body>
 </html>
